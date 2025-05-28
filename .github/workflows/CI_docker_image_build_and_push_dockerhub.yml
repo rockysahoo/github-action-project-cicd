@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+    # rockysahoo is the userName and github-action-project-cicd is the repository name creates in DockerHub & $(date +%Y%m%d) is tag
+      run: docker build . -t rockysahoo/github-action-project-cicd:$(date +%Y%m%d)
+    # Generate the token to give GitHub action to permission to connect Docker Hub(docker hub generate the token Account Setting -> Personal Access Token)
+    #- run: echo "dckr_pat__JsausgeKRgpRIJsAYpBIJ552vI" | docker login -u rockysahoo --password-stdin #first echo values will take as arguments in the second command after |
+    # You can hide the secrets and username using "Secrets and variable" feature provided by GitHub and then read through the variable
+    # These ${{}} property configure in GitHub_Repository_Home -> Settings -> Secrets & Variable -> Actions
+    - run: echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin #this is same as line_18
+    - name: Push the Docker Image
+      run: docker push rockysahoo/github-action-project-cicd:$(date +%Y%m%d)
