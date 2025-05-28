@@ -1,8 +1,5 @@
 FROM gradle:8-jdk21-alpine as builder
-WORKDIR /app
-COPY build.gradle settings.gradle ./
-COPY src ./src
-RUN gradle build --no-daemon
+
 
 FROM openjdk:21
 WORKDIR /app
