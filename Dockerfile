@@ -1,14 +1,13 @@
 FROM gradle:8-jdk21-alpine AS builder
 WORKDIR /app
 
-# Copy all necessary files
-COPY build.gradle settings.gradle ./
-COPY src ./src
+# Copy all project files
+COPY . .
 
-# Build with explicit dependency resolution
-RUN gradle clean build --no-daemon --stacktrace
+# Build the application
+RUN gradle build --no-daemon
 
-FROM openjdk:21-jre-alpine
+FROM openjdk:21-ea-1-jdk-oracle
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
 EXPOSE 8080
