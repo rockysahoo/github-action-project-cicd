@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  kotlinapp: #application container
+    container_name: kotlinapp-for-cicd
+    image: github-action-project-cicd:latest
+    build: # this is the build context: .
+      context: .
+      dockerfile: Dockerfile #pull Dockerfile data
+    ports: # port exposed to the host machine
+      - "8080:8080"
+    environment: # these are the environment variables that are passed to the dockerfile
+      # Add these explicit Spring datasource properties: If not added to application.properties
+      SPRING_DATASOURCE_URL: jdbc:h2:tcp://h2-server:1521/mem:testdb
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD:
+      SPRING_H2_CONSOLE_ENABLED: true
+    depends_on: # this is the dependency on the services
+      - h2-server
+      - redis
+
+  h2-server:
+    image: oscarfonts/h2:latest
+    environment:
+      H2_OPTIONS: -webAllowOthers -tcpAllowOthers
+    ports:
+      - "1521:1521"   # H2 TCP port
+      - "8081:8081"   # H2 Web console
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  h2_date:
