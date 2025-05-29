@@ -1,13 +1,16 @@
 package github.action.project.cicd.controller
 
-import com.springboot.postgres.docker.kotlin.prometheus.grafana.app.util.LogServiceWrapper
+
+import github.action.project.cicd.util.LogServiceWrapper
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(path = ["/api/v1"], produces = ["application/json"])
-class MyApiController() : MyApi{
+class MyApiController(
+private val myApiService: MyApiService
+) : MyApi{
 
     companion object {
         private val logger = LogServiceWrapper(MyApiController::class)
@@ -16,9 +19,9 @@ class MyApiController() : MyApi{
     override fun getUserDetails()
         : ResponseEntity<List<String>> {
 
-        val users = listOf("Rocky", "Pratik", "Sangram")
+        val response = myApiService.getUsersDetails()
 
-        return ResponseEntity.ok(users)
+        return ResponseEntity.ok(response)
 
     }
 
