@@ -220,7 +220,7 @@ jobs:
   deploy:
     name: Build Docker Image and Push Docker Hub
     runs-on: ubuntu-latest
-    needs: [test, build, security-scan, code-quality]
+    needs: [test, build, security-scan]
 
     steps:
       - uses: actions/checkout@v4
