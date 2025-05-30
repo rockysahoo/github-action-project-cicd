@@ -54,7 +54,6 @@ jobs:
         with:
           name: Test Results (JDK ${{ matrix.java-version }})
           path: '**/build/test-results/test/TEST-*.xml'
-          #path: '**/build/reports/tests/test/index.xml'
           reporter: java-junit
 
       - name: Upload test results
