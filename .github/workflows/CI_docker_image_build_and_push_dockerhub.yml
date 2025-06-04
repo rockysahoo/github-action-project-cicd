@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # this is the standard plugIns github provided, you can find inside the github action docs
     - name: Build the Docker image
     # rockysahoo is the userName and github-action-project-cicd is the repository name creates in DockerHub & $(date +%Y%m%d) is tag
       run: docker build . -t rockysahoo/github-action-project-cicd:$(date +%Y%m%d)
